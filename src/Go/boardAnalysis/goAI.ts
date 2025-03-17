@@ -32,6 +32,9 @@ const playerPromises: Record<GoColor.black | GoColor.white, PlayerPromise> = {
   [GoColor.black]: { nextTurn: Promise.resolve(gameOver), resolver: null },
   [GoColor.white]: { nextTurn: Promise.resolve(gameOver), resolver: null },
 };
+// The promises aren't in a fully working state until we do this.
+// It is OK to reset the AI multiple times in a row.
+resetAI();
 
 export function getNextTurn(color: GoColor.black | GoColor.white): Promise<Play> {
   return playerPromises[color].nextTurn;
@@ -435,7 +438,7 @@ function getCornerMove(board: Board) {
   if (isCornerAvailableForMove(board, cornerMax, cornerMax, boardEdge, boardEdge)) {
     return board[cornerMax][cornerMax];
   }
-  if (isCornerAvailableForMove(board, 0, cornerMax, cornerMax, boardEdge)) {
+  if (isCornerAvailableForMove(board, 0, cornerMax, 2, boardEdge)) {
     return board[2][cornerMax];
   }
   if (isCornerAvailableForMove(board, 0, 0, 2, 2)) {
